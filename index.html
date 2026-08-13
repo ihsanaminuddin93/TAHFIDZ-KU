@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TahfizhKu Pro v2.0 (Cetak Semua Modul) - SDIT Qurratu A'yun Al-Islami</title>
+    <title>TahfizhKu Pro v2.0 (Cetak Semua Modul) - Pesantren Darul Istiqamah</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -537,41 +537,33 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // URL dan Kunci ini HARUS SAMA dengan yang ada di Portal Terpadu
-    const supabaseUrl = 'https://gquohpkbygzkuybgblmp.supabase.co';
-    const supabaseKey = 'sb_publishable_xcOviXGQvu-Ua3U3sRY_wg_AHlCMYMt'; 
+    const supabaseUrl = 'https://emmmnxurmgoglhxrnrvy.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbW1ueHVybWdvZ2xoeHJucnZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1NzI3ODksImV4cCI6MjEwMjE0ODc4OX0.Nk-Z8jYjcIQBWgolwpD8-DjEdrj77mbYLITwr0PPeLk'; 
     
     const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Langsung periksa apakah pengunjung membawa tiket dari Portal (abaikan proteksi jika dijalankan secara lokal/file://)
-    _supabase.auth.getSession().then(({ data }) => {
-      const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      if (!data.session && !isLocal) {
-        // Jika tidak ada tiket dan bukan di lokal, langsung tendang kembali ke Portal!
-        window.location.replace("https://portal-terpadu.vercel.app/");
-      }
-    });
   </script>
 </head>
 <body>
 
-    <img id="img-logo-sekolah" src="logo.png" style="display:none;">
+    <img id="img-logo-sekolah" src="darul.png" style="display:none;">
     <img id="img-logo-kabupaten" src="logo_maros.png" style="display:none;">
     <div id="splash-screen">
-        <img src="logo.png" alt="Logo" class="splash-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ffffff\' stroke-width=\'2\'><path d=\'M12 2L2 22h20L12 2z\'/></svg>'">
+        <img src="darul.png" alt="Logo" class="splash-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ffffff\' stroke-width=\'2\'><path d=\'M12 2L2 22h20L12 2z\'/></svg>'">
         <div style="font-size: 13px; margin-top: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display:none;" id="teks-loading">Memuat Database...</div>
     </div>
 
     <div id="login-page" class="container hidden">
         <div class="card" style="text-align: center; background:transparent; box-shadow:none; border:none;">
-            <img src="logo.png" alt="Logo" style="width: 100px; margin-bottom: 15px;" onerror="this.style.display='none'">
+            <img src="darul.png" alt="Logo" style="width: 100px; margin-bottom: 15px;" onerror="this.style.display='none'">
             <h1 style="color:var(--emerald-logo); font-weight:900; font-size:28px; margin:0;">TahfizhKu Pro</h1>
-            <span style="display:block; color:var(--text-mute); font-weight:700; margin-bottom:30px;">SDIT Qurratu A'yun Al-Islami</span>
+            <span style="display:block; color:var(--text-mute); font-weight:700; margin-bottom:30px;">Pesantren Darul Istiqamah</span>
             
             <label>1. Pilih Profil Database</label>
             <select id="select-muhaffiz" style="text-align-last:center;"></select>
             
             <label>2. Email Supabase</label>
-            <input type="email" id="email-muhaffiz" placeholder="emailguru@sdit.com" style="text-align:center;">
+            <input type="email" id="email-muhaffiz" placeholder="emailguru@darulistiqamah.com" style="text-align:center;">
             <label>Kata Sandi</label>
             <input type="password" id="sandi-muhaffiz" placeholder="••••••••" style="text-align:center; letter-spacing:3px;">
             
@@ -1136,8 +1128,8 @@
     
     <div id="modal-laporan" class="modal-overlay hidden"><div class="modal-content"><div class="section-title">Pusat Laporan</div><label>Tanggal Tertulis</label><input type="date" id="tanggal-laporan"><label>Nama Penandatangan</label><input type="text" id="penanggung-jawab" placeholder="Admin Pusat..."><label>Kategori Laporan</label><select id="kategori-laporan"><option value="quran">Al-Qur'an</option><option value="hadits">Hadis</option><option value="doa">Doa Harian</option><option value="aisar">Aisar</option><option value="kosakata">Bahasa Arab (Kosakata)</option><option value="semua">Semua Modul (Gabungan)</option></select><label>Mode Cetak</label><select id="jenis-laporan" onchange="aturFormLaporan()"><option value="semua">Rekap Seluruh Kelas (Global)</option><option value="halaqah">Filter Per Kelas Saja</option><option value="santri">Filter Per Murid Saja</option></select><div id="opsi-halaqah-laporan" class="hidden" style="position: relative; margin-top:10px;"><label>Pilih Kelas</label><input type="text" id="pilih-halaqah-laporan" placeholder="🔍 Cari / Pilih Kelas..." onkeyup="filterHalaqah('laporan')" onclick="toggleListHalaqah('laporan')" autocomplete="off" style="margin:0;"><div id="dropdown-laporan-halaqah" class="dropdown-custom hidden"></div></div><div id="opsi-santri-laporan" class="hidden" style="position: relative; margin-top:10px;"><label>Pilih Murid</label><input type="text" id="pilih-santri-laporan" placeholder="🔍 Cari / Pilih Murid..." onkeyup="filterSantri('laporan')" onclick="toggleListSantri('laporan')" autocomplete="off" style="margin:0;"><div id="dropdown-laporan-santri" class="dropdown-custom hidden"></div></div><div style="display:flex; gap:10px; margin-top:20px;"><button onclick="prosesCetak('PDF')" class="btn-danger" style="background:#EF4444; border:none; color:white;">📄 PDF</button><button onclick="prosesCetak('Excel')">📊 EXCEL</button></div><button type="button" style="background:#E2E8F0; color:var(--text-dark); border:none; font-weight:900; margin-top:10px;" onclick="tutupModalLaporan()">TUTUP</button></div></div>
 <script>
-        const SUPABASE_URL = 'https://dadggousdyjorcbsgzge.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'sb_publishable_tiSZx3k53-C6KtrgtDYe_A_bId6SF96';
+        const SUPABASE_URL = 'https://emmmnxurmgoglhxrnrvy.supabase.co'; 
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbW1ueHVybWdvZ2xoeHJucnZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1NzI3ODksImV4cCI6MjEwMjE0ODc4OX0.Nk-Z8jYjcIQBWgolwpD8-DjEdrj77mbYLITwr0PPeLk';
         let savedToken = getSafeStorage('supabase_token');
         let REQ_HEADERS = { 
             'apikey': SUPABASE_ANON_KEY, 
@@ -3217,7 +3209,7 @@ async function gantiNamaKelas(namaLama) {
             doc.setFillColor(...darkBlue); doc.triangle(297, 0, 230, 0, 297, 60, 'F'); doc.setFillColor(...gold); doc.triangle(297, 0, 260, 0, 297, 30, 'F'); doc.setFillColor(...darkBlue); doc.triangle(297, 100, 200, 210, 297, 210, 'F'); doc.setFillColor(...lightBlue); doc.triangle(297, 150, 240, 210, 297, 210, 'F');
 
             // === SVG FALLBACK UTK LOGO SEKOLAH & KABUPATEN MAROS ===
-            let fallbackSekolahLogo = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#047857" stroke="#F59E0B" stroke-width="4"/><circle cx="50" cy="50" r="38" fill="#FFFFFF"/><path d="M28 42 Q50 32 72 42 L72 65 Q50 55 28 65 Z" fill="#047857"/><polygon points="50,18 54,28 65,28 56,34 59,45 50,38 41,45 44,34 35,28 46,28" fill="#FBBF24"/><text x="50" y="78" font-size="7" font-weight="bold" fill="#047857" text-anchor="middle" font-family="sans-serif">SDIT QURRATU A'YUN</text></svg>`);
+            let fallbackSekolahLogo = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#047857" stroke="#F59E0B" stroke-width="4"/><circle cx="50" cy="50" r="38" fill="#FFFFFF"/><path d="M28 42 Q50 32 72 42 L72 65 Q50 55 28 65 Z" fill="#047857"/><polygon points="50,18 54,28 65,28 56,34 59,45 50,38 41,45 44,34 35,28 46,28" fill="#FBBF24"/><text x="50" y="78" font-size="6" font-weight="bold" fill="#047857" text-anchor="middle" font-family="sans-serif">DARUL ISTIQAMAH</text></svg>`);
             let fallbackMarosLogo = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 5 L85 20 L85 65 C85 80 50 95 50 95 C50 95 15 80 15 65 L15 20 Z" fill="#047857" stroke="#F59E0B" stroke-width="3"/><path d="M50 12 L78 24 L78 62 C78 74 50 86 50 86 C50 86 22 74 22 62 L22 24 Z" fill="#1E3A8A"/><polygon points="50,22 55,35 68,35 57,43 61,56 50,48 39,56 43,43 32,35 45,35" fill="#FBBF24"/><path d="M25 65 Q50 55 75 65 L70 78 Q50 68 30 78 Z" fill="#F59E0B"/><text x="50" y="73" font-size="7" font-weight="bold" fill="#FFFFFF" text-anchor="middle" font-family="sans-serif">MAROS</text></svg>`);
 
             // Fungsi Renders Logo dengan jaminan Fallback
@@ -3246,11 +3238,11 @@ async function gantiNamaKelas(namaLama) {
             gambarLogoKePdf('img-logo-kabupaten', fallbackMarosLogo, 255, 9, 26, 26);
             
             // === HEADER KOP SERTIFIKAT RESMI (Ukuran Font Proporsional & Elegan) ===
-            doc.setTextColor(30, 41, 59); doc.setFont("times", "bold"); doc.setFontSize(12); 
-            doc.text("YAYASAN PENDIDIKAN QURRATU A'YUN AL-ISLAMI MAROS", 148, 14.5, {align: "center"});
+            doc.setTextColor(30, 41, 59); doc.setFont("times", "bold"); doc.setFontSize(14); 
+            doc.text("PESANTREN DARUL ISTIQAMAH", 148, 16.5, {align: "center"});
             
-            doc.setTextColor(4, 120, 87); doc.setFont("helvetica", "bold"); doc.setFontSize(24); 
-            doc.text("SDIT QURRATU A'YUN AL-ISLAMI", 148, 23.5, {align: "center"});
+            doc.setTextColor(4, 120, 87); doc.setFont("helvetica", "bold"); doc.setFontSize(22); 
+            doc.text("TAHFIZHKU PRO", 148, 25, {align: "center"});
             
             let kopAlamat = "Jalan Poros Makassar - Maros Km. 26 Maccopa, Kab. Maros, Sulawesi Selatan";
             doc.setTextColor(71, 85, 105); doc.setFont("helvetica", "normal"); doc.setFontSize(10); 
@@ -3302,7 +3294,7 @@ async function gantiNamaKelas(namaLama) {
 
             // Tanggal & Paragraf Persembahan (Times Serif Klasik Anggun)
             doc.setTextColor(30, 41, 59); doc.setFont("times", "italic"); doc.setFontSize(12);
-            doc.text(`Pada hari ${tglMasehi} bertempat di SDIT Qurratu A'yun Al-Islami`, 148, 129, {align: "center"});
+            doc.text(`Pada hari ${tglMasehi} bertempat di Pesantren Darul Istiqamah`, 148, 129, {align: "center"});
             
             doc.setFont("times", "normal"); doc.setFontSize(11);
             doc.text("Kepadanya kami berikan penghargaan setinggi-tingginya.", 148, 138, {align: "center"});
@@ -3324,8 +3316,8 @@ async function gantiNamaKelas(namaLama) {
             // Tanda Tangan Kepsek & Guru (Kombinasi Sans & Serif Bold)
             doc.setTextColor(30, 41, 59); doc.setFontSize(11.5); doc.setFont("helvetica", "normal");
             doc.text("Mengetahui,", 95, 166, {align: "center"}); 
-            doc.setFont("helvetica", "bold"); doc.text("Kepala SDIT Qurratu A'yun", 95, 172, {align: "center"}); 
-            doc.setFont("times", "bold"); doc.setFontSize(12.5); doc.text("Radiant Fadli, S.Pd.", 95, 196, {align: "center"});
+            doc.setFont("helvetica", "bold"); doc.text("Pimpinan Pesantren", 95, 172, {align: "center"}); 
+            doc.setFont("times", "bold"); doc.setFontSize(12.5); doc.text("Pimpinan Pesantren", 95, 196, {align: "center"});
             
             let namaPembimbing = guruAktif ? guruAktif : "________________________"; 
             doc.setFont("helvetica", "normal"); doc.setFontSize(11.5); doc.text("Guru Pembimbing", 195, 172, {align: "center"}); 
@@ -3338,7 +3330,7 @@ async function gantiNamaKelas(namaLama) {
 
             // === CATATAN KAKI RESMI (FOOTER NOTE) ===
             doc.setTextColor(100, 116, 139); doc.setFont("helvetica", "italic"); doc.setFontSize(8);
-            doc.text("* Sertifikat ini diterbitkan secara resmi oleh SDIT Qurratu A'yun Al-Islami dan dinyatakan sah dengan tanda tangan serta cap stempel sekolah.", 148, 203.5, {align: "center"});
+            doc.text("* Sertifikat ini diterbitkan secara resmi oleh Pesantren Darul Istiqamah dan dinyatakan sah dengan tanda tangan serta cap stempel.", 148, 203.5, {align: "center"});
 
             doc.save(`Sertifikat_${nama}_Juz_${juzCetak}.pdf`);
         }
@@ -3347,7 +3339,7 @@ async function gantiNamaKelas(namaLama) {
             let wb = XLSX.utils.book_new(); 
             XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Kelas","Nama Murid"],["Kelas 1A","01 - Ahmad Zaid"],["Kelas 1A","02 - Budi"]]), "Murid"); 
             XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Nama Guru","Sandi"],["Ustadz Fulan","guru123"]]), "Guru"); 
-            XLSX.writeFile(wb, "Template_SDIT_QurratuAyun.xlsx"); 
+            XLSX.writeFile(wb, "Template_Pesantren_DarulIstiqamah.xlsx"); 
         }
 
         async function prosesImportExcel() {
@@ -3476,7 +3468,7 @@ async function gantiNamaKelas(namaLama) {
             if (t === 'Excel') { 
                 let wb = XLSX.utils.book_new(); 
                 let finalData = [
-                    ["SDIT QURRATU A'YUN AL-ISLAMI MAROS"],
+                    ["PESANTREN DARUL ISTIQAMAH"],
                     [titleDoc],
                     ["Tanggal Cetak:", tgl, "", "Penanggung Jawab:", pj],
                     [] 
@@ -3493,7 +3485,7 @@ async function gantiNamaKelas(namaLama) {
                 let doc = new jsPDF('l'); 
                 doc.setFontSize(15); 
                 doc.setTextColor(4, 120, 87); 
-                doc.text(`${titleDoc} - SDIT Qurratu A'yun`, 14, 15); 
+                doc.text(`${titleDoc} - Pesantren Darul Istiqamah`, 14, 15); 
                 doc.setFontSize(10); 
                 doc.setTextColor(100, 116, 139); 
                 doc.text(`Tanggal: ${tgl} | Penanggung Jawab: ${pj}`, 14, 22); 
